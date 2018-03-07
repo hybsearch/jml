@@ -1,0 +1,5 @@
+# Ignore PDF documentation files when compiling the image
+*.pdf
+
+# Ignore .git/
+/.git/
