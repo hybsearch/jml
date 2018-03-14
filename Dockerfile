@@ -1,6 +1,4 @@
-FROM debian:stretch
-
-RUN apt-get update && apt-get -qy install make gcc g++ bash
+FROM docker.io/hybsearch/docker-base:v1.1
 
 ADD . /jml
 WORKDIR /jml/src
