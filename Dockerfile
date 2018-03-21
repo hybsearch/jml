@@ -1,4 +1,4 @@
-FROM docker.io/hybsearch/docker-base:v1.1
+FROM docker.io/hybsearch/docker-base:v1.2
 
 ADD . /jml
 WORKDIR /jml/src
