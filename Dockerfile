@@ -8,4 +8,4 @@ ARG cores=4
 RUN make -j$cores
 RUN mv ./jml /usr/local/bin/jml
 
-ENTRYPOINT /bin/bash
+CMD /bin/bash
