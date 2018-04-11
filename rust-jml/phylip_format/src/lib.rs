@@ -120,7 +120,7 @@ pub struct Phylip {
 }
 
 impl Phylip {
-    pub fn from_str<S>(data: S) -> Result<Phylip, &'static str>
+    pub fn from_str<S>(data: S) -> Result<Phylip, String>
     where
         S: Into<String>,
     {
@@ -132,21 +132,24 @@ impl Phylip {
             .expect("Need at least one line to parse");
         let (sequence_count, sequence_length) = match get_counts(first_line) {
             Ok(counts) => counts,
-            Err(error) => return Err(error),
+            Err(error) => return Err(error.to_string()),
         };
 
         let samples: Vec<PhylipSample> = data_str.lines().skip(1).filter_map(parse_line).collect();
 
-        debug_assert!(verify_lengths(
+        let verification = verify_lengths(
             samples.clone(),
             sequence_count,
             sequence_length
-        ));
+        );
 
-        Ok(Phylip {
-            sequence_length,
-            sequences: samples,
-        })
+        match verification {
+            Ok(_) => Ok(Phylip {
+                sequence_length,
+                sequences: samples,
+            }),
+            Err(err) => Err(err),
+        }
     }
 
     fn hard_new(sequence_length: usize, sequences: Vec<PhylipSample>) -> Phylip {
@@ -196,9 +199,9 @@ impl fmt::Display for Phylip {
     }
 }
 
-fn verify_lengths(samples: Vec<PhylipSample>, sample_count: usize, sequence_length: usize) -> bool {
+fn verify_lengths(samples: Vec<PhylipSample>, sample_count: usize, sequence_length: usize) -> Result<bool, String> {
     if samples.len() != sample_count {
-        panic!(format!(
+        return Err(format!(
             "number of samples ({:?}) and expected sample count ({:?}) do not match",
             samples.len(),
             sample_count
@@ -214,13 +217,13 @@ fn verify_lengths(samples: Vec<PhylipSample>, sample_count: usize, sequence_leng
             .position(|seq_len| *seq_len != sequence_length)
             .unwrap();
 
-        panic!(format!(
+        return Err(format!(
             "all samples did not conform to the expected length of {:?} (including sample at {:?})",
             sequence_length, problematic_position
         ));
     }
 
-    true
+    Ok(true)
 }
 
 fn parse_line(line: &str) -> Option<PhylipSample> {
