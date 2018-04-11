@@ -5,3 +5,4 @@ authors = ["Hawken Rives <rives@stolaf.edu>"]
 
 [dependencies]
 phylip_format = { path = "../phylip_format" }
+clap = "2.31.2"
