@@ -100,6 +100,8 @@ gpnkepgg1 -ggaacaatcaattattacccacaaagacacataaaaccacaggaacctctactccaaccataaaaaaca
     }
 }
 
+const IDENTIFIER_LENGTH: usize = 10;
+
 #[derive(Clone, Debug, PartialEq)]
 pub struct PhylipSample {
     pub identifier: String,
@@ -120,7 +122,7 @@ impl PhylipSample {
 
 impl fmt::Display for PhylipSample {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{:width$}{}", self.identifier, self.sequence, width = 10)
+        write!(f, "{:width$}{}", self.identifier, self.sequence, width = IDENTIFIER_LENGTH)
     }
 }
 
@@ -238,14 +240,12 @@ fn verify_lengths(samples: Vec<PhylipSample>, sample_count: usize, sequence_leng
 }
 
 fn parse_line(line: &str) -> Option<PhylipSample> {
-    let identifier_length = 10;
-
     let trimmed = line.trim();
     if trimmed.is_empty() {
         return None;
     }
 
-    let (identifier, sequence) = trimmed.split_at(identifier_length);
+    let (identifier, sequence) = trimmed.split_at(IDENTIFIER_LENGTH);
 
     Some(PhylipSample {
         identifier: identifier.trim().to_string(),
