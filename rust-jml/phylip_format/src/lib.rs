@@ -87,6 +87,17 @@ gpnkepgg1 -ggaacaatcaattattacccacaaagacacataaaaccacaggaacctctactccaaccataaaaaaca
         let serialized = format!("{}", phy);
         assert_eq!(serialized, "3 18\nblgcgdgca1-ggaacaataaattatca\nahjmjgeja1ggaacaatcaattattac\nahjmjgejabggaacaatcaattattac");
     }
+
+    #[test]
+    fn mixed_length_identifiers_serialize() {
+        let phy: Phylip = Phylip::new(vec![
+            PhylipSample::new("blgcgdgca1", "-ggaacaataaattatca"),
+            PhylipSample::new("ahjmjgeja1", "ggaacaatcaattattac"),
+            PhylipSample::new("ahjmj", "ggaacaatcaattattac"),
+        ]).unwrap();
+        let serialized = format!("{}", phy);
+        assert_eq!(serialized, "3 18\nblgcgdgca1-ggaacaataaattatca\nahjmjgeja1ggaacaatcaattattac\nahjmj     ggaacaatcaattattac");
+    }
 }
 
 #[derive(Clone, Debug, PartialEq)]
