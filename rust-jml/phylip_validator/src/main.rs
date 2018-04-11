@@ -12,14 +12,18 @@ fn main() {
         .version("1.0")
         .about("Parse/dump/validate a PHYLIP file")
         .author("Hawken Rives")
-        .arg(Arg::with_name("debug")
-            .short("d")
-            .long("debug")
-            .help("Should we print the file as Rust structs?"))
-        .arg(Arg::with_name("INPUT")
-            .help("Sets the input file to use")
-            .required(true)
-            .index(1))
+        .arg(
+            Arg::with_name("debug")
+                .short("d")
+                .long("debug")
+                .help("Should we print the file as Rust structs?"),
+        )
+        .arg(
+            Arg::with_name("INPUT")
+                .help("Sets the input file to use")
+                .required(true)
+                .index(1),
+        )
         .get_matches();
 
     let debug: bool = matches.is_present("debug");
@@ -27,7 +31,8 @@ fn main() {
     let mut f = File::open(filename).expect("file not found");
 
     let mut contents = String::new();
-    f.read_to_string(&mut contents).expect("something went wrong reading the file");
+    f.read_to_string(&mut contents)
+        .expect("something went wrong reading the file");
 
     match Phylip::from_str(contents) {
         Ok(phy) => {
@@ -36,7 +41,7 @@ fn main() {
             } else {
                 println!("{}", phy)
             }
-        },
+        }
         Err(err) => println!("{:?}", err),
     }
 }
