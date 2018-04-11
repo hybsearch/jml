@@ -1,0 +1,7 @@
+[package]
+name = "newick"
+version = "0.1.0"
+authors = ["Hawken Rives <rives@stolaf.edu>"]
+
+[dependencies]
+nom = "^3.2"

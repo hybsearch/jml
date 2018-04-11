@@ -1,0 +1,8 @@
+[package]
+name = "jml"
+version = "0.1.0"
+authors = ["Hawken Rives <rives@stolaf.edu>"]
+
+[dependencies]
+mcmccoal = { path = "../mcmccoal" }
+seqgen = { path = "../seqgen" }

@@ -1,0 +1,10 @@
+[workspace]
+members = [
+    "jml",
+    "mcmccoal",
+    "newick",
+    "seqgen",
+    "phylip_format",
+    "phylip_validator",
+    "nexus_format",
+]

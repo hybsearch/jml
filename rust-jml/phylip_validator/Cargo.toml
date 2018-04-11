@@ -1,0 +1,7 @@
+[package]
+name = "phylip_validator"
+version = "0.1.0"
+authors = ["Hawken Rives <rives@stolaf.edu>"]
+
+[dependencies]
+phylip_format = { path = "../phylip_format" }
