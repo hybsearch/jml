@@ -53,7 +53,7 @@ gpnkepgg1 -ggaacaatcaattattacccacaaagacacataaaaccacaggaacctctactccaaccataaaaaaca
     }
 
     #[test]
-    #[should_panic(expected = "all samples did not conform to the expected length of 843 (including sample at 0)")]
+    #[should_panic(expected = "all samples did not conform to the expected length of 843 (including index 0 [length 5])")]
     fn mismatched_sample_lengths() {
         Phylip::from_str("1 843\nblgcgdgca1-ggaa").unwrap();
     }
@@ -225,14 +225,18 @@ fn verify_lengths(samples: Vec<PhylipSample>, sample_count: usize, sequence_leng
     let lengths_are_good = lengths.iter().all(|seq_len| *seq_len == sequence_length);
 
     if !lengths_are_good {
-        let problematic_position = lengths
+        let problematic_positions: Vec<String> = lengths
             .iter()
-            .position(|seq_len| *seq_len != sequence_length)
-            .unwrap();
+            .enumerate()
+            .filter(|&(i, seq_len)| *seq_len != sequence_length)
+            .map(|(i, seq_len)| format!("index {} [length {}]", i, *seq_len))
+            .collect();
+
+        let positions = problematic_positions.join(",");
 
         return Err(format!(
-            "all samples did not conform to the expected length of {:?} (including sample at {:?})",
-            sequence_length, problematic_position
+            "all samples did not conform to the expected length of {:?} (including {})",
+            sequence_length, positions
         ));
     }
 
