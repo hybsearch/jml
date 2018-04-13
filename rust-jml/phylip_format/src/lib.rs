@@ -131,7 +131,13 @@ impl PhylipSample {
 
 impl fmt::Display for PhylipSample {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{:width$}{}", self.identifier, self.sequence, width = IDENTIFIER_LENGTH)
+        write!(
+            f,
+            "{:width$}{}",
+            self.identifier,
+            self.sequence,
+            width = IDENTIFIER_LENGTH
+        )
     }
 }
 
@@ -159,11 +165,7 @@ impl Phylip {
 
         let samples: Vec<PhylipSample> = data_str.lines().skip(1).filter_map(parse_line).collect();
 
-        let verification = verify_lengths(
-            samples.clone(),
-            sequence_count,
-            sequence_length
-        );
+        let verification = verify_lengths(samples.clone(), sequence_count, sequence_length);
 
         match verification {
             Ok(_) => Ok(Phylip {
@@ -221,7 +223,11 @@ impl fmt::Display for Phylip {
     }
 }
 
-fn verify_lengths(samples: Vec<PhylipSample>, sample_count: usize, sequence_length: usize) -> Result<bool, String> {
+fn verify_lengths(
+    samples: Vec<PhylipSample>,
+    sample_count: usize,
+    sequence_length: usize,
+) -> Result<bool, String> {
     if samples.len() != sample_count {
         return Err(format!(
             "number of samples ({:?}) and expected sample count ({:?}) do not match",
