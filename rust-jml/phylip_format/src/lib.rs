@@ -37,6 +37,15 @@ gpnkepgg1 -ggaacaatcaattattacccacaaagacacataaaaccacaggaacctctactccaaccataaaaaaca
     }
 
     #[test]
+    fn ignores_blank_lines() {
+        let data = "1 5\n\nblgcgdgca1-ggaa\n";
+        let result = Phylip::from_str(data).unwrap();
+        let expected = Phylip::new(vec![PhylipSample::new("blgcgdgca1", "-ggaa")]).unwrap();
+
+        assert_eq!(result, expected);
+    }
+
+    #[test]
     #[should_panic(expected = "number of samples (1) and expected sample count (8) do not match")]
     fn mismatched_sample_counts() {
         Phylip::from_str("8 843\nblgcgdgca1-ggaacaataaattatcacctcaaaagacacataaaaccacaggaaccccta-ctcaaccataaaaaacacaaatccactattaaaaatcattaacaacacctttattgatctccccaccccatctaacatctctactttatgaaactttggttcattactaggggcatgcctcattctacaactagccacaggaatcttcttagctatacactactcatctgatatttccatagcattctcatcaatctcccacatccaacgagacgttcaatatggctgactaattcgaaatatacacgctaacggtgcttcattattctttatatgcatttacctccatattggacgaggaatctactacggttcatacctttacaagaaaacctgaaacactggagtaatattactactcctagtcatagccactgcattcgtgggctacgtactaccatgaggacaaatatcattctgaggagctacagtaatcaccaatctcctatcagccattccatatgtaggccctacacttgtagaatgaatttgaggggggttctccgtagataacgccacccttacccgattctttacattccacttcctaatcccattcgccatcctaggaataactatactacatctactactactacatgaaacaggatcaaacaacccaacaggactaaactcaaactgtgacaaaatcccattccacccatatttctcctataaagatctactaggccttattctaataataacactcctactcacccttaccctattctaccctaacctactaggagatccagacaactttacaccagccaacccactaaccacc").unwrap();
